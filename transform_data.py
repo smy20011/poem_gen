@@ -7,6 +7,8 @@ import tensorflow as tf
 import jieba
 import multiprocessing
 
+VOCAB_SIZE = 5000
+
 def read_from_json():
     f = open("dump.json")
     for line in f:
@@ -65,20 +67,21 @@ def combine_counters(counters):
 def save_to_file(corpus, vocab):
     title = open("title.txt", "w")
     reply = open("reply.txt", "w")
-    vocab = open("vocab.txt", "w")
+    vocab_file = open("vocab.txt", "w")
     for t, r in corpus:
         print(" ".join(t), file=title)
         print(" ".join(r), file=reply)
     
-    for word in vocab:
-        print(word, file=vocab)
+    for word in vocab.most_common(VOCAB_SIZE):
+        print(word[0], file=vocab_file)
+    print("$$", file=vocab_file)
 
     title.close()
     reply.close()
-    vocab.close()
+    vocab_file.close()
     
 pool = multiprocessing.pool.Pool()
-data = itertools.islice(read_from_json(), 1000)
+data = read_from_json()
 corpus = pool.map(tokenlize, data)
 corpus, vocab = itertools.tee(corpus)
 vocab = chunk(vocab, 10000)
