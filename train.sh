@@ -1,13 +1,12 @@
 #!/bin/bash
 USR_DIR=`pwd`
-PROBLEM=s1_chat
-# PROBLEM=poetry_lines
+PROBLEM=chinese_poem
 DATA_DIR=$USR_DIR/data
 TMP_DIR=/tmp/t2t_datagen
 MODEL=transformer
-HPARAMS=transformer_small
+HPARAMS=transformer_base_single_gpu
 TRAIN_DIR=$USR_DIR/data/train/$PROBLEM
-SCHEDULE=train
+SCHEDULE=continuous_train_and_eval
 
 mkdir -p $DATA_DIR $TRAIN_DIR
 
@@ -24,13 +23,12 @@ t2t-trainer \
   --data_dir=$DATA_DIR \
   --problem=$PROBLEM \
   --model=$MODEL \
-  --hparams='batch_size=128' \
+  --hparams='batch_size=512' \
   --hparams_set=$HPARAMS \
   --schedule=$SCHEDULE \
   --output_dir=$TRAIN_DIR
 
 DECODE_FILE=$DATA_DIR/test_input.txt
-# python tokenlize.py < $DATA_DIR/test_input.txt > $DECODE_FILE
 BEAM_SIZE=4
 ALPHA=0.6
 
