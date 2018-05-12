@@ -1,11 +1,11 @@
 #!/bin/bash
 USR_DIR=`pwd`
 PROBLEM=chinese_poem
-DATA_DIR=$USR_DIR/data
+DATA_DIR=$USR_DIR/artifacts
 TMP_DIR=/tmp/t2t_datagen
 MODEL=transformer
 HPARAMS=transformer_base_single_gpu
-TRAIN_DIR=$USR_DIR/data/train/$PROBLEM
+TRAIN_DIR=$DATA_DIR/train/$PROBLEM
 SCHEDULE=continuous_train_and_eval
 
 mkdir -p $DATA_DIR $TRAIN_DIR
